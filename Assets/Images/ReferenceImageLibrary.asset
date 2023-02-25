@@ -27,5 +27,5 @@ MonoBehaviour:
       m_GuidHigh: 14443009586806049995
     m_Size: {x: 0.3, y: 0.4}
     m_SpecifySize: 1
-    m_Name: IMG_8104
-    m_Texture: {fileID: 2800000, guid: 69a6d68ef8f4f514cbcc2265b2e06fc8, type: 3}
+    m_Name: squid
+    m_Texture: {fileID: 0}

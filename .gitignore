@@ -26,6 +26,9 @@
 # Visual Studio cache directory
 .vs/
 
+# Intellij idea
+.idea/
+
 # Gradle cache directory
 .gradle/
 
@@ -75,4 +78,6 @@ crashlytics-build.properties
 ## Added by ourselves
 ### Remove this if it's not preferred
 *_BackUpThisFolder_ButDontShipItWithYourGame
+
+UnityXRContent/
 

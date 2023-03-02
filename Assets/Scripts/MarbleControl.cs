@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using Collections;
 
 public class MarbleControl : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class MarbleControl : MonoBehaviour
     GameObject m_marble_prefab;
     
     [SerializeField] private GameObject m_debug;
+    [SerializeField] private SerializableDictionary<string, string> level_map;
 
     private GameObject marble;
     private GameObject plane;
     private TextMeshProUGUI debug_text;
     private Camera _camera;
     private bool ar_enabled = false;
+    
     private void Start()
     {
         debug_text = m_debug.GetComponent<TextMeshProUGUI>();
@@ -25,16 +28,19 @@ public class MarbleControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var diff = Quaternion.Inverse(Input.gyro.attitude) * _camera.transform.localRotation;
-        debug_text.text = diff.eulerAngles.ToString();
         if (ar_enabled)
         {
             if ((marble.transform.position - plane.transform.position).magnitude > 5)
             {
-                marble.transform.position = plane.transform.position + plane.transform.up * 0.01f;
-                marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                ResetMarble(plane.transform.position + plane.transform.up * marble.transform.localScale.x / 2);
             }
         }
+    }
+
+    public void ResetMarble(Vector3 pos)
+    {
+        marble.transform.position = pos;
+        marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
     void OnEnable() => m_TrackedImageManager.trackedImagesChanged += OnChanged;
@@ -45,31 +51,38 @@ public class MarbleControl : MonoBehaviour
     {
         foreach (var newImage in eventArgs.added)
         {
-            debug_text.text += newImage.referenceImage.name;
-            if (newImage.referenceImage.name == "squid")
+            var name = newImage.referenceImage.name;
+            if (level_map.Dict.ContainsKey(name))
             {
-                m_debug.GetComponent<TextMeshProUGUI>().text += " add marble\n";
-                marble = Instantiate(m_marble_prefab);
-                marble.transform.position = newImage.gameObject.transform.position;
-                plane = newImage.gameObject;
-                ar_enabled = true;
+                var level_async = Resources.LoadAsync<GameObject>(level_map.Dict[name]);
+                level_async.completed += op =>
+                {
+                    plane = Instantiate((GameObject) level_async.asset);
+                    plane.transform.position = newImage.transform.position;
+                    plane.transform.rotation = newImage.transform.rotation;
+                    plane.transform.parent = newImage.transform;
+                    debug_text.text += "add marble\n";
+                    marble = Instantiate(m_marble_prefab);
+                    marble.transform.position = newImage.gameObject.transform.position;
+                    ar_enabled = true;
+                };
+
             }
         }
     
         foreach (var updatedImage in eventArgs.updated)
         {
             // Handle updated event
+            // m_debug.GetComponent<TextMeshProUGUI>().text += updatedImage.referenceImage.name + ": updated\n";
         }
     
         foreach (var removedImage in eventArgs.removed)
         {
             // Handle removed event
-            if (removedImage.referenceImage.name == "squid")
-            {
-                m_debug.GetComponent<TextMeshProUGUI>().text += " remove marble\n";
+
+                debug_text.text += "remove marble\n";
                 Destroy(marble);
                 ar_enabled = false;
-            }
         }
     }
 }

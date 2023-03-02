@@ -320,8 +320,7 @@ MonoBehaviour:
   m_SerializedLibrary: {fileID: 11400000, guid: 2c153c7f0c8e0a849bd0973266928095,
     type: 2}
   m_MaxNumberOfMovingImages: 1
-  m_TrackedImagePrefab: {fileID: 2258068657357373632, guid: c3f1d6ee02ff28d469d82d61651861fe,
-    type: 3}
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!114 &580751379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +696,11 @@ MonoBehaviour:
   m_marble_prefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
     type: 3}
   m_debug: {fileID: 1435971376}
+  level_map:
+    _keys:
+    - squid
+    _values:
+    - Levels/Level1
 --- !u!4 &805229889
 Transform:
   m_ObjectHideFlags: 0
@@ -904,7 +908,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Debug
+  m_text: 'Debug Text
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

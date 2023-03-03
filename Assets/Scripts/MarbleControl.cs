@@ -32,7 +32,7 @@ public class MarbleControl : MonoBehaviour
         {
             if ((marble.transform.position - plane.transform.position).magnitude > 5)
             {
-                ResetMarble(plane.transform.position + plane.transform.up * marble.transform.localScale.x / 2);
+                ResetMarble(GameObject.FindWithTag("Start").transform.position);
             }
         }
     }
@@ -59,11 +59,11 @@ public class MarbleControl : MonoBehaviour
                 {
                     plane = Instantiate((GameObject) level_async.asset);
                     plane.transform.position = newImage.transform.position;
-                    plane.transform.rotation = newImage.transform.rotation;
+                    plane.transform.rotation *= newImage.transform.rotation;
                     plane.transform.parent = newImage.transform;
                     debug_text.text += "add marble\n";
                     marble = Instantiate(m_marble_prefab);
-                    marble.transform.position = newImage.gameObject.transform.position;
+                    ResetMarble(GameObject.FindWithTag("Start").transform.position);
                     ar_enabled = true;
                 };
 

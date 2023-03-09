@@ -2,35 +2,36 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using Collections;
+using UnityEngine.Serialization;
 
 public class MarbleControl : MonoBehaviour
 {
     [SerializeField]
-    ARTrackedImageManager m_TrackedImageManager;
+    ARTrackedImageManager trackedImageManager;
     [SerializeField]
-    GameObject m_marble_prefab;
+    GameObject marblePrefab;
     
-    [SerializeField] private GameObject m_debug;
-    [SerializeField] private SerializableDictionary<string, string> level_map;
+    [SerializeField] private GameObject debug;
+    [SerializeField] private SerializableDictionary<string, string> levelMap;
 
-    private GameObject marble;
-    private GameObject plane;
-    private TextMeshProUGUI debug_text;
+    private GameObject _marble;
+    private PlaneBase _plane;
+    private TextMeshProUGUI _debugText;
     private Camera _camera;
-    private bool ar_enabled = false;
+    private bool _arEnabled = false;
     
     private void Start()
     {
-        debug_text = m_debug.GetComponent<TextMeshProUGUI>();
+        _debugText = debug.GetComponent<TextMeshProUGUI>();
         _camera = Camera.main;
     }
     
 
     private void FixedUpdate()
     {
-        if (ar_enabled)
+        if (_arEnabled)
         {
-            if ((marble.transform.position - plane.transform.position).magnitude > 5)
+            if ((_marble.transform.position - _plane.transform.position).magnitude > 5)
             {
                 ResetMarble(GameObject.FindWithTag("Start").transform.position);
             }
@@ -39,32 +40,30 @@ public class MarbleControl : MonoBehaviour
 
     public void ResetMarble(Vector3 pos)
     {
-        marble.transform.position = pos;
-        marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _marble.transform.position = pos;
+        _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
-    void OnEnable() => m_TrackedImageManager.trackedImagesChanged += OnChanged;
+    void OnEnable() => trackedImageManager.trackedImagesChanged += OnChanged;
     
-    void OnDisable() => m_TrackedImageManager.trackedImagesChanged -= OnChanged;
+    void OnDisable() => trackedImageManager.trackedImagesChanged -= OnChanged;
     
     void OnChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
         foreach (var newImage in eventArgs.added)
         {
             var name = newImage.referenceImage.name;
-            if (level_map.Dict.ContainsKey(name))
+            if (levelMap.Dict.ContainsKey(name))
             {
-                var level_async = Resources.LoadAsync<GameObject>(level_map.Dict[name]);
+                var level_async = Resources.LoadAsync<PlaneBase>(levelMap.Dict[name]);
                 level_async.completed += op =>
                 {
-                    plane = Instantiate((GameObject) level_async.asset);
-                    plane.transform.position = newImage.transform.position;
-                    plane.transform.rotation *= newImage.transform.rotation;
-                    plane.transform.parent = newImage.transform;
-                    debug_text.text += "add marble\n";
-                    marble = Instantiate(m_marble_prefab);
+                    _plane = Instantiate((PlaneBase)level_async.asset);
+                    _plane.TrackedImage = newImage;
+                    _debugText.text += "add marble\n";
+                    _marble = Instantiate(marblePrefab);
                     ResetMarble(GameObject.FindWithTag("Start").transform.position);
-                    ar_enabled = true;
+                    _arEnabled = true;
                 };
 
             }
@@ -80,9 +79,9 @@ public class MarbleControl : MonoBehaviour
         {
             // Handle removed event
 
-                debug_text.text += "remove marble\n";
-                Destroy(marble);
-                ar_enabled = false;
+                _debugText.text += "remove marble\n";
+                Destroy(_marble);
+                _arEnabled = false;
         }
     }
 }

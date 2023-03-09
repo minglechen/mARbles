@@ -692,11 +692,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eff31d79380b9f45b2a250990afecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedImageManager: {fileID: 580751378}
-  m_marble_prefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
+  trackedImageManager: {fileID: 580751378}
+  marblePrefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
     type: 3}
-  m_debug: {fileID: 1435971376}
-  level_map:
+  debug: {fileID: 1435971376}
+  levelMap:
     _keys:
     - squid
     _values:

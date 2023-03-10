@@ -16,7 +16,7 @@ public class PlaneBase : MonoBehaviour
             if (_trackedImage)
             {
                 transform.position = _trackedImage.transform.position;
-                transform.rotation = _trackedImage.transform.rotation * Quaternion.Euler(-90, 0, 0);
+                transform.rotation = _trackedImage.transform.rotation;
                 isTracking = true;
             }
 
@@ -34,6 +34,6 @@ public class PlaneBase : MonoBehaviour
     void FixedUpdate()
     {
         if (!isTracking) return;
-        _rb.Move(_trackedImage.transform.position, _trackedImage.transform.rotation * Quaternion.Euler(-90,0,0));
+        _rb.Move(_trackedImage.transform.position, _trackedImage.transform.rotation);
     }
 }

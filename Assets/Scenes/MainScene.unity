@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 422218014}
-  m_IndirectSpecularColor: {r: 0.4440221, g: 0.49316514, b: 0.5722316, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -693,14 +693,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedImageManager: {fileID: 580751378}
-  marblePrefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
+  marblePrefab: {fileID: 6772915672937217090, guid: f6b5ce88134f6774799f187caf1f3ed9,
     type: 3}
   debug: {fileID: 1435971376}
   levelMap:
     _keys:
     - squid
+    - dog
     _values:
     - Levels/Level_1
+    - Levels/Level_2
 --- !u!4 &805229889
 Transform:
   m_ObjectHideFlags: 0

@@ -14,18 +14,16 @@ public class PlaneBase : MonoBehaviour
         set
         {
             _trackedImage = value;
-            if (_trackedImage)
-            {
-                transform.position = _trackedImage.transform.position;
-                transform.rotation = _trackedImage.transform.rotation;
-                isTracking = true;
-            }
+            if (!_trackedImage) return;
+            transform.position = _trackedImage.transform.position;
+            transform.rotation = _trackedImage.transform.rotation;
+            _isTracking = true;
 
         }
     }
 
     private ARTrackedImage _trackedImage;
-    private bool isTracking;
+    private bool _isTracking;
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -34,7 +32,7 @@ public class PlaneBase : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isTracking) return;
+        if (!_isTracking) return;
         // Use a rolling average to smooth out movement
         var currentPosition = _trackedImage.transform.position;
         if (!_startInterpolation)

@@ -6,10 +6,11 @@ using UnityEngine;
 public class Marble : MonoBehaviour
 {
     private Rigidbody rb;
-    public MarbleControl MarbleControl;
+    private MarbleControl _marbleControl;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        _marbleControl = GameObject.FindWithTag("GameController").GetComponent<MarbleControl>();
         // Reduce the gravity to reduce sensitivity
         Physics.gravity *= 0.5f;
     }
@@ -25,25 +26,13 @@ public class Marble : MonoBehaviour
         if (other.CompareTag("Finish"))
         {
             // show something to the player
-            MarbleControl.debugText.text = "You win!";
+            _marbleControl.debugText.text = "You win!";
         } 
         else if (other.CompareTag("Respawn"))
         {
-            MarbleControl.debugText.text += "Set respawn point\n";
-            MarbleControl.restartPoint = other.gameObject;
+            // MarbleControl.debugText.text += "Set respawn point\n";
+            _marbleControl.restartPoint = other.gameObject;
         }
 
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Bouncer"))
-        {
-            Debug.Log("bouncer trigger stay");
-            var direction = rb.velocity.normalized;
-            var normal = Vector3.ProjectOnPlane(transform.position - other.transform.position, MarbleControl.GetPlaneUp()).normalized;
-            var newDirection = Vector3.Reflect(direction, normal);
-            rb.AddForce(newDirection * 5);
-        }
     }
 }

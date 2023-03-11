@@ -5,25 +5,21 @@ using UnityEngine;
 
 public class Bouncer : MonoBehaviour
 {
+    private MarbleControl _marbleControl;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        _marbleControl = GameObject.FindWithTag("GameController").GetComponent<MarbleControl>();
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void OnTriggerStay(Collider other)
     {
-        
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        var contact = collision.GetContact(0);
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            // MarbleControl.debugText.text += "on collision enter\n";
-            Debug.Log("bouncer on collision enter");
-
-        }
+        if (!other.CompareTag("Player")) return;
+        var rb = other.GetComponent<Rigidbody>();
+        var direction = rb.velocity.normalized;
+        var normal = Vector3.ProjectOnPlane(transform.position - other.transform.position, _marbleControl.GetPlaneUp()).normalized;
+        var newDirection = Vector3.Reflect(direction, normal);
+        rb.AddForce(newDirection * 10);
     }
 }

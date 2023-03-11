@@ -23,7 +23,6 @@ public class MarbleControl : MonoBehaviour
     public float respawnTriggerDistance;
     private Marble _marble;
     private PlaneBase _plane;
-    
 
     private Camera _camera;
     private bool _arEnabled;
@@ -58,6 +57,32 @@ public class MarbleControl : MonoBehaviour
     {
         return _plane.transform.up;
     }
+
+    private void LoadLevelAsync(string levelPath, ARTrackedImage newImage)
+    {
+        if (_arEnabled)
+        {
+            _arEnabled = false;
+            // Maybe add an object pool?
+            Destroy(_plane.gameObject);
+        }
+
+        var level_async = Resources.LoadAsync<PlaneBase>(levelPath);
+        level_async.completed += op =>
+        {
+            _plane = Instantiate((PlaneBase)level_async.asset);
+            _plane.TrackedImage = newImage;
+            if (!_marble)
+            {
+                debugText.text += "add marble\n";
+                _marble = Instantiate(marblePrefab);
+            }
+            restartPoint = GameObject.FindWithTag("Start");
+            ResetMarble(restartPoint.transform.position);
+            _arEnabled = true;
+        };
+    }
+    
     void OnEnable() => trackedImageManager.trackedImagesChanged += OnChanged;
     
     void OnDisable() => trackedImageManager.trackedImagesChanged -= OnChanged;
@@ -66,36 +91,23 @@ public class MarbleControl : MonoBehaviour
     {
         foreach (var newImage in eventArgs.added)
         {
+            // Handle added event
             var name = newImage.referenceImage.name;
+            debugText.text += $"{name}\n";
             if (!levelMap.Dict.ContainsKey(name)) continue;
-            var level_async = Resources.LoadAsync<PlaneBase>(levelMap.Dict[name]);
-            if (_arEnabled)
-            {
-                _arEnabled = false;
-                // Maybe add an object pool?
-                Destroy(_plane.gameObject);
-            }
-
-            level_async.completed += op =>
-            {
-                _plane = Instantiate((PlaneBase)level_async.asset);
-                _plane.TrackedImage = newImage;
-                if (!_marble)
-                {
-                    debugText.text += "add marble\n";
-                    _marble = Instantiate(marblePrefab);
-                    _marble.MarbleControl = this;
-                }
-                restartPoint = GameObject.FindWithTag("Start");
-                ResetMarble(restartPoint.transform.position);
-                _arEnabled = true;
-            };
+            LoadLevelAsync(levelMap.Dict[name], newImage);
+            return;
         }
     
         foreach (var updatedImage in eventArgs.updated)
         {
             // Handle updated event
             // m_debug.GetComponent<TextMeshProUGUI>().text += updatedImage.referenceImage.name + ": updated\n";
+            // var name = updatedImage.referenceImage.name;
+            // if (name == _currentImageName) continue;
+            // debugText.text += name;
+            // if (!levelMap.Dict.ContainsKey(name)) continue;
+            // LoadLevelAsync(levelMap.Dict[name], name, updatedImage);
         }
     
         // I've never seen this being called in practice

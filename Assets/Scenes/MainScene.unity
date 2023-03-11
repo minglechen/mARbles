@@ -703,6 +703,8 @@ MonoBehaviour:
     _values:
     - Levels/Level_1
     - Levels/Level_2
+  respawnHeightOffset: 0.01
+  respawnTriggerDistance: 2
 --- !u!4 &805229889
 Transform:
   m_ObjectHideFlags: 0

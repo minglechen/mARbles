@@ -18,10 +18,12 @@ public class MarbleControl : MonoBehaviour
     public TextMeshProUGUI debugText;
     [NonSerialized]
     public GameObject restartPoint;
+
+    public float respawnHeightOffset;
+    public float respawnTriggerDistance;
     private Marble _marble;
     private PlaneBase _plane;
-
-    private string _currentImageName;
+    
 
     private Camera _camera;
     private bool _arEnabled;
@@ -38,9 +40,10 @@ public class MarbleControl : MonoBehaviour
     {
         if (_arEnabled)
         {
-            if ((_marble.transform.position - _plane.transform.position).magnitude > 5)
+            if ((_marble.transform.position - _plane.transform.position).magnitude > respawnTriggerDistance)
             {
-                ResetMarble(restartPoint.transform.position);
+                var restartTransform = restartPoint.transform;
+                ResetMarble(restartTransform.position + restartTransform.up * respawnHeightOffset);
             }
         }
     }
@@ -51,6 +54,10 @@ public class MarbleControl : MonoBehaviour
         _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
+    public Vector3 GetPlaneUp()
+    {
+        return _plane.transform.up;
+    }
     void OnEnable() => trackedImageManager.trackedImagesChanged += OnChanged;
     
     void OnDisable() => trackedImageManager.trackedImagesChanged -= OnChanged;
@@ -65,11 +72,10 @@ public class MarbleControl : MonoBehaviour
             if (_arEnabled)
             {
                 _arEnabled = false;
+                // Maybe add an object pool?
                 Destroy(_plane.gameObject);
             }
- 
-            _currentImageName = name;
-            
+
             level_async.completed += op =>
             {
                 _plane = Instantiate((PlaneBase)level_async.asset);
@@ -92,6 +98,7 @@ public class MarbleControl : MonoBehaviour
             // m_debug.GetComponent<TextMeshProUGUI>().text += updatedImage.referenceImage.name + ": updated\n";
         }
     
+        // I've never seen this being called in practice
         foreach (var removedImage in eventArgs.removed)
         {
             // Handle removed event

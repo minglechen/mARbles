@@ -7,7 +7,8 @@ using UnityEngine.XR.ARFoundation;
 public class PlaneBase : MonoBehaviour
 {
     private Rigidbody _rb;
-
+    private Vector3 _previousPosition;
+    private bool _startInterpolation;
     public ARTrackedImage TrackedImage
     {
         set
@@ -34,6 +35,15 @@ public class PlaneBase : MonoBehaviour
     void FixedUpdate()
     {
         if (!isTracking) return;
-        _rb.Move(_trackedImage.transform.position, _trackedImage.transform.rotation);
+        // Use a rolling average to smooth out movement
+        var currentPosition = _trackedImage.transform.position;
+        if (!_startInterpolation)
+        {
+            _startInterpolation = true;
+            _previousPosition = currentPosition;
+        }
+        var avg = (currentPosition + _previousPosition) / 2;
+        _previousPosition = currentPosition;
+        _rb.Move(avg, _trackedImage.transform.rotation);
     }
 }

@@ -10,8 +10,8 @@ public class Marble : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        // Reduce the gravity so that ball falls slower
-        Physics.gravity *= 0.1f;
+        // Reduce the gravity to reduce sensitivity
+        Physics.gravity *= 0.5f;
     }
     
     void FixedUpdate()
@@ -29,7 +29,21 @@ public class Marble : MonoBehaviour
         } 
         else if (other.CompareTag("Respawn"))
         {
+            MarbleControl.debugText.text += "Set respawn point\n";
             MarbleControl.restartPoint = other.gameObject;
+        }
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Bouncer"))
+        {
+            Debug.Log("bouncer trigger stay");
+            var direction = rb.velocity.normalized;
+            var normal = Vector3.ProjectOnPlane(transform.position - other.transform.position, MarbleControl.GetPlaneUp()).normalized;
+            var newDirection = Vector3.Reflect(direction, normal);
+            rb.AddForce(newDirection * 5);
         }
     }
 }

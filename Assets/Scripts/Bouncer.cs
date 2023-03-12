@@ -18,8 +18,14 @@ public class Bouncer : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         var rb = other.GetComponent<Rigidbody>();
         var direction = rb.velocity.normalized;
-        var normal = Vector3.ProjectOnPlane(transform.position - other.transform.position, _marbleControl.GetPlaneUp()).normalized;
-        var newDirection = Vector3.Reflect(direction, normal);
-        rb.AddForce(newDirection * 10);
+        var normal = Vector3.ProjectOnPlane(other.transform.position - transform.position, _marbleControl.GetPlaneUp()).normalized;
+        // var newDirection = Vector3.Reflect(direction, normal);
+        rb.AddForce(normal * 10);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!other.CompareTag("Player")) return;
+        GetComponent<AudioSource>().Play();
     }
 }

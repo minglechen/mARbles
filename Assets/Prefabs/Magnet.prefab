@@ -96,4 +96,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interferenceDistance: 2
-  forceMagnitude: 0.01
+  forceMagnitude: 0.1

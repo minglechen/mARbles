@@ -49,6 +49,7 @@ public class MarbleControl : MonoBehaviour
 
     public void ResetMarble(Vector3 pos)
     {
+        GetComponent<AudioSource>().Play();
         _marble.transform.position = pos;
         _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
@@ -95,6 +96,7 @@ public class MarbleControl : MonoBehaviour
             var name = newImage.referenceImage.name;
             debugText.text += $"{name}\n";
             if (!levelMap.Dict.ContainsKey(name)) continue;
+            debugText.text += "load level";
             LoadLevelAsync(levelMap.Dict[name], newImage);
             return;
         }

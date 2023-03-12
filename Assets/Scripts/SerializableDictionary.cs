@@ -27,16 +27,16 @@ namespace Collections
         {
             if (_keys.Count != _values.Count)
             {
-                throw new DataException("Keys and values size mismatch");
+                throw new ArgumentException("Keys and values size mismatch");
             }
 
             if (new HashSet<TKey>(_keys).Count != _keys.Count)
             {
-                throw new ConstraintException("Key values must be unique");
+                throw new ArgumentException("Key values must be unique");
             }
             for (int i = 0; i < _keys.Count; i++)
             {
-                Dict.Add(_keys[i], _values[i]);
+                Dict[_keys[i]] = _values[i];
             }
         }
     }

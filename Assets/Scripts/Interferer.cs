@@ -4,8 +4,7 @@ public abstract class Interferer : MonoBehaviour
 {
     public float interferenceDistance;
     public float forceMagnitude;
-
-
+    
     // 1 for attraction, -1 for repulsion
     protected int ForceDirection;
 

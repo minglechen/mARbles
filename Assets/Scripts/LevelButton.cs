@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Menu;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +43,6 @@ public class LevelButton : MonoBehaviour
         }
         _isHighlighted = s;
     }
-
     
     public void SetText(string s)
     {
@@ -57,6 +55,4 @@ public class LevelButton : MonoBehaviour
             _text = s;
         }
     }
-    
-
 }

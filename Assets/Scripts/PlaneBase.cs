@@ -12,8 +12,9 @@ public class PlaneBase : MonoBehaviour
         {
             _trackedImage = value;
             if (!_trackedImage) return;
-            transform.position = _trackedImage.transform.position;
-            transform.rotation = _trackedImage.transform.rotation;
+            var trackedTransform = _trackedImage.transform;
+            transform.position = trackedTransform.position;
+            transform.rotation = trackedTransform.rotation;
             _isTracking = true;
 
         }
@@ -30,7 +31,8 @@ public class PlaneBase : MonoBehaviour
     {
         if (!_isTracking) return;
         // Use a rolling average to smooth out movement
-        var currentPosition = _trackedImage.transform.position;
+        var trackedTransform = _trackedImage.transform;
+        var currentPosition = trackedTransform.position;
         if (!_startInterpolation)
         {
             _startInterpolation = true;

@@ -10,8 +10,7 @@ public class Checkpoint : MonoBehaviour
     public GameObject button;
     private MarbleControl _marbleControl;
     private bool _isStart;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         _marbleControl = GameObject.FindWithTag("GameController").GetComponent<MarbleControl>();

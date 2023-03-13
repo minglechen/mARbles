@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +10,7 @@ public class MarbleControl : MonoBehaviour
 {
     
     public ARTrackedImageManager trackedImageManager;
-    public Marble marblePrefab;
+    public GameObject marblePrefab;
     
     [FormerlySerializedAs("levelMap")] 
     public SerializableDictionary<string, string> hiddenLevelMap;
@@ -26,12 +25,11 @@ public class MarbleControl : MonoBehaviour
     public float respawnTriggerDistance;
     
     private Checkpoint _restartPoint;
-    private Marble _marble;
+    private GameObject _marble;
     private PlaneBase _plane;
     private TextMeshProUGUI _debugText;
     private ARTrackedImage _currentTrackedImage;
     private bool _arEnabled;
-
     
     private void Start()
     {
@@ -46,7 +44,7 @@ public class MarbleControl : MonoBehaviour
             if ((_marble.transform.position - _plane.transform.position).magnitude > respawnTriggerDistance)
             {
                 var restartTransform = _restartPoint.transform;
-                ResetMarble(restartTransform.position + restartTransform.up * respawnHeightOffset);
+                ResetMarble(restartTransform.position + GetPlaneUp() * respawnHeightOffset);
             }
         }
     }
@@ -71,7 +69,7 @@ public class MarbleControl : MonoBehaviour
         _restartPoint.SetButtonColor(false);
         _restartPoint = GameObject.FindWithTag("Start").GetComponent<Checkpoint>();
         var restartTransform = _restartPoint.transform;
-        ResetMarble(restartTransform.position  + restartTransform.up * respawnHeightOffset);
+        ResetMarble(restartTransform.position  + GetPlaneUp() * respawnHeightOffset);
     }
     
     public void ResetMarble(Vector3 pos, bool initial = false)

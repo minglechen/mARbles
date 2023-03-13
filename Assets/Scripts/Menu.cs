@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
-using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
 
 namespace Menu
@@ -27,6 +25,8 @@ namespace Menu
         public DebugSlider soundEffectsButton;
         
         public DebugSlider showDebugButton;
+
+        public Slider gravitySlider;
          
         public GameObject levelMenuRoot;
         
@@ -46,7 +46,7 @@ namespace Menu
             if(!CheckMenuConfigured())
             {
                 enabled = false;
-                Debug.LogError($"The menu has not been configured correctly and will currently be disabled. For an already configured menu, right-click on the Scene Inspector > XR > ARDebugMenu.");
+                Debug.LogError($"The menu has not been configured correctly and will currently be disabled.");
             }
             else
             {
@@ -70,9 +70,9 @@ namespace Menu
                 return false;
             }
             else if(displayInfoMenuButton == null || restartLevelButton == null || displayOptionsMenuButton == null || soundEffectsButton == null ||
-                showDebugButton == null || infoMenu == null || optionsMenu == null || menuFont == null || toolbar == null)
+                showDebugButton == null || gravitySlider == null || infoMenu == null || optionsMenu == null || menuFont == null || toolbar == null)
             {
-                Debug.LogWarning("The menu has not been fully configured so some functionality will be disabled. For an already configured menu, right-click on the Scene Inspector > XR > ARDebugMenu");
+                Debug.LogWarning("The menu has not been fully configured so some functionality will be disabled.");
             }
 
             return true;
@@ -148,7 +148,18 @@ namespace Menu
                 showDebugButton.interactable = true;
                 showDebugButton.onValueChanged.AddListener(delegate {_marbleControl.ToggleDebug();});
             }
+
+            if (gravitySlider)
+            {
+                gravitySlider.interactable = true;
+                gravitySlider.onValueChanged.AddListener(SetGravity);
+            }
             
+        }
+
+        void SetGravity(float v)
+        {
+            Physics.gravity = Vector3.down * v;
         }
 
         void ConfigureLevels()

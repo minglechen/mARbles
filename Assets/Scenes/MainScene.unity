@@ -593,7 +593,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626177977}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b15f82cc229284894964d2d30806969d, type: 3}
   m_Name: 
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedImageManager: {fileID: 580751378}
-  marblePrefab: {fileID: 6772915672937217090, guid: f6b5ce88134f6774799f187caf1f3ed9,
+  marblePrefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
     type: 3}
   hiddenLevelMap:
     _keys:
@@ -957,7 +957,7 @@ PrefabInstance:
     - target: {fileID: 6234637625423282858, guid: 6fb6d0d913f9b2b40932e1ca65e47dc8,
         type: 3}
       propertyPath: m_Name
-      value: DebugMenu
+      value: Menu
       objectReference: {fileID: 0}
     - target: {fileID: 6234637625423282862, guid: 6fb6d0d913f9b2b40932e1ca65e47dc8,
         type: 3}

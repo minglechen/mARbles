@@ -171,7 +171,7 @@ namespace Menu
 
         void ConfigureLevels()
         {
-            var pos = new Vector2(-110, 110);
+            var anchoredPosition = new Vector2(-110, 110);
             const int xOffset = 110;
             const int yOffset = -110;
             for (int i = 0; i < _marbleControl.levels.Count; i++)
@@ -180,14 +180,14 @@ namespace Menu
                 button.Menu = this;
                 if (i == 0)
                 {
-                    button.GetComponent<RectTransform>().anchoredPosition = pos;
+                    button.GetComponent<RectTransform>().anchoredPosition = anchoredPosition;
                     button.HighlightButton(true);
                 }
                 else
                 {
-                    var rowStart = i % 3 == 0 ? -2 : 1;
-                    pos += new Vector2(rowStart * xOffset, i / 3 * yOffset);
-                    button.GetComponent<RectTransform>().anchoredPosition = pos;
+                    var columnIndex = i % 3;
+                    var rowIndex = i / 3;
+                    button.GetComponent<RectTransform>().anchoredPosition = anchoredPosition + new Vector2(columnIndex * xOffset, rowIndex * yOffset);
                 }
 
                 var level = i;

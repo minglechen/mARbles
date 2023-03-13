@@ -28,14 +28,14 @@ public class MarbleControl : MonoBehaviour
     private Checkpoint _restartPoint;
     private Marble _marble;
     private PlaneBase _plane;
-    private TextMeshProUGUI debugText;
+    private TextMeshProUGUI _debugText;
     private ARTrackedImage _currentTrackedImage;
     private bool _arEnabled;
 
     
     private void Start()
     {
-        debugText = debug.GetComponent<TextMeshProUGUI>();
+        _debugText = debug.GetComponent<TextMeshProUGUI>();
     }
     
 
@@ -99,12 +99,12 @@ public class MarbleControl : MonoBehaviour
 
     public void DebugLog(string s)
     {
-        debugText.text += $"{s}\n";
+        _debugText.text += $"{s}\n";
     }
 
     public void ClearDebugLog()
     {
-        debugText.text = "Debug text\n\n";
+        _debugText.text = "Debug text\n\n";
     }
 
     public void ToggleDebug()
@@ -127,10 +127,10 @@ public class MarbleControl : MonoBehaviour
             Destroy(_plane.gameObject);
         }
 
-        var level_async = Resources.LoadAsync<PlaneBase>(levelPath);
-        level_async.completed += op =>
+        var levelAsync = Resources.LoadAsync<PlaneBase>(levelPath);
+        levelAsync.completed += op =>
         {
-            _plane = Instantiate((PlaneBase)level_async.asset);
+            _plane = Instantiate((PlaneBase)levelAsync.asset);
             _plane.TrackedImage = newImage;
             if (!_marble)
             {

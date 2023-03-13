@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
@@ -28,8 +25,7 @@ public class PlaneBase : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
     }
-
-
+    
     void FixedUpdate()
     {
         if (!_isTracking) return;
@@ -40,8 +36,8 @@ public class PlaneBase : MonoBehaviour
             _startInterpolation = true;
             _previousPosition = currentPosition;
         }
-        var avg = (currentPosition + _previousPosition) / 2;
+        var avgPos = (currentPosition + _previousPosition) / 2;
         _previousPosition = currentPosition;
-        _rb.Move(avg, _trackedImage.transform.rotation);
+        _rb.Move(avgPos, _trackedImage.transform.rotation);
     }
 }

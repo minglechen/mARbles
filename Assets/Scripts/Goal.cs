@@ -22,6 +22,7 @@ public class Goal : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         GetComponent<AudioSource>().Play();
+        _marbleControl.OnGameWin();
         _marbleControl.ClearDebugLog();
         _marbleControl.DebugLog("you win!");
     }

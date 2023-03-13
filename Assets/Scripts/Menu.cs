@@ -8,55 +8,37 @@ using UnityEngine.XR.ARFoundation;
 namespace Menu
 {
     /// <summary>
-    /// Menu that is added to a scene to surface tracking data and visualize trackables in order to aid in debugging.
+    /// Main menu for level select, restart level, and options.
     /// </summary>
     [RequireComponent(typeof(Canvas))]
     public class ARMenu : MonoBehaviour
     {
-
-        [SerializeField]
-        Button m_DisplayInfoMenuButton;
         
-
-        [SerializeField]
-        Button m_DisplayConfigurationsMenuButton;
-
-
-        [SerializeField]
-        Button m_DisplayDebugOptionsMenuButton;
-
-
-        [SerializeField]
-        GameObject m_InfoMenu;
+        public Button displayInfoMenuButton;
         
+        public Button restartLevelButton;
 
-        [SerializeField]
-        GameObject m_DebugOptionsMenu;
+        public Button displayOptionsMenuButton;
 
+        public GameObject infoMenu;
         
-        [SerializeField]
-         DebugSlider m_SoundEffectsButton;
-
-
-        [SerializeField]
-        DebugSlider m_ShowDebugButton;
-
-        [SerializeField]
-        private GameObject _levelMenuRoot;
-
-        [SerializeField] private LevelButton _levelButton;
+        public GameObject optionsMenu;
         
+        public DebugSlider soundEffectsButton;
         
-        [SerializeField]
-        GameObject m_Toolbar;
-
-        [SerializeField]
-        Font m_MenuFont;
+        public DebugSlider showDebugButton;
+         
+        public GameObject levelMenuRoot;
+        
+        public  LevelButton levelButton;
+        
+        public GameObject toolbar;
+        
+        public Font menuFont;
 
         private MarbleControl _marbleControl;
         private bool _restartSelected;
-        private List<LevelButton> _levelButtons = new List<LevelButton>();
-        bool m_ConfigMenuSetup;
+        private readonly List<LevelButton> _levelButtons = new List<LevelButton>();
 
         void Start()
         {
@@ -83,12 +65,12 @@ namespace Menu
         }
         bool CheckMenuConfigured()
         {
-            if(m_DisplayInfoMenuButton == null && m_DisplayConfigurationsMenuButton == null && m_DisplayDebugOptionsMenuButton == null && m_Toolbar == null)
+            if(displayInfoMenuButton == null && restartLevelButton == null && displayOptionsMenuButton == null && toolbar == null)
             {
                 return false;
             }
-            else if(m_DisplayInfoMenuButton == null || m_DisplayConfigurationsMenuButton == null || m_DisplayDebugOptionsMenuButton == null || m_SoundEffectsButton == null ||
-                m_ShowDebugButton == null || m_InfoMenu == null || m_DebugOptionsMenu == null || m_MenuFont == null || m_Toolbar == null)
+            else if(displayInfoMenuButton == null || restartLevelButton == null || displayOptionsMenuButton == null || soundEffectsButton == null ||
+                showDebugButton == null || infoMenu == null || optionsMenu == null || menuFont == null || toolbar == null)
             {
                 Debug.LogWarning("The menu has not been fully configured so some functionality will be disabled. For an already configured menu, right-click on the Scene Inspector > XR > ARDebugMenu");
             }
@@ -104,9 +86,9 @@ namespace Menu
         
         void InitMenu()
         {
-            m_DisplayInfoMenuButton.onClick.AddListener(delegate { ShowMenu(m_InfoMenu); });
-            m_DisplayConfigurationsMenuButton.onClick.AddListener(delegate { RestartLevel(); });
-            m_DisplayDebugOptionsMenuButton.onClick.AddListener(delegate { ShowMenu(m_DebugOptionsMenu); });
+            displayInfoMenuButton.onClick.AddListener(delegate { ShowMenu(infoMenu); });
+            restartLevelButton.onClick.AddListener(delegate { RestartLevel(); });
+            displayOptionsMenuButton.onClick.AddListener(delegate { ShowMenu(optionsMenu); });
             Canvas menu = GetComponent<Canvas>();
 #if UNITY_IOS || UNITY_ANDROID
             menu.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -126,26 +108,26 @@ namespace Menu
 
             if(screenWidthInInches < 5)
             {
-                var rect = m_Toolbar.GetComponent<RectTransform>();
+                var rect = toolbar.GetComponent<RectTransform>();
                 rect.anchorMin = new Vector2(0.5f, 0);
                 rect.anchorMax = new Vector2(0.5f, 0);
                 rect.eulerAngles = new Vector3(rect.eulerAngles.x, rect.eulerAngles.y, 90);
                 rect.anchoredPosition = new Vector2(0, 20);
-                var infoMenuButtonRect = m_DisplayInfoMenuButton.GetComponent<RectTransform>();
-                var configurationsMenuButtonRect = m_DisplayConfigurationsMenuButton.GetComponent<RectTransform>();
-                var debugOptionsMenuButtonRect = m_DisplayDebugOptionsMenuButton.GetComponent<RectTransform>();
+                var infoMenuButtonRect = displayInfoMenuButton.GetComponent<RectTransform>();
+                var configurationsMenuButtonRect = restartLevelButton.GetComponent<RectTransform>();
+                var debugOptionsMenuButtonRect = displayOptionsMenuButton.GetComponent<RectTransform>();
                 infoMenuButtonRect.localEulerAngles =  new Vector3(infoMenuButtonRect.localEulerAngles.x, infoMenuButtonRect.localEulerAngles.y, -90);
                 configurationsMenuButtonRect.localEulerAngles = new Vector3(configurationsMenuButtonRect.localEulerAngles.x, configurationsMenuButtonRect.localEulerAngles.y, -90);
                 debugOptionsMenuButtonRect.localEulerAngles = new Vector3(debugOptionsMenuButtonRect.localEulerAngles.x, debugOptionsMenuButtonRect.localEulerAngles.y, -90);
 
-               var infoMenuRect = m_InfoMenu.GetComponent<RectTransform>();
+               var infoMenuRect = infoMenu.GetComponent<RectTransform>();
                infoMenuRect.anchorMin = new Vector2(0.5f, 0);
                infoMenuRect.anchorMax = new Vector2(0.5f, 0);
                infoMenuRect.pivot = new Vector2(0.5f, 0);
                infoMenuRect.anchoredPosition = new Vector2(0, 150);
                
 
-               var debugOptionsMenuRect = m_DebugOptionsMenu.GetComponent<RectTransform>();
+               var debugOptionsMenuRect = optionsMenu.GetComponent<RectTransform>();
                debugOptionsMenuRect.anchorMin = new Vector2(0.5f, 0);
                debugOptionsMenuRect.anchorMax = new Vector2(0.5f, 0);
                debugOptionsMenuRect.pivot = new Vector2(0.5f, 0);
@@ -155,16 +137,16 @@ namespace Menu
 
         void ConfigureButtons()
         {
-            if(m_SoundEffectsButton)
+            if(soundEffectsButton)
             {
-                m_SoundEffectsButton.interactable = true;
-                m_SoundEffectsButton.onValueChanged.AddListener(delegate {ToggleOriginVisibility();});
+                soundEffectsButton.interactable = true;
+                soundEffectsButton.onValueChanged.AddListener(delegate {_marbleControl.ToggleSound();});
             }
 
-            if(m_ShowDebugButton)
+            if(showDebugButton)
             {
-                m_ShowDebugButton.interactable = true;
-                m_ShowDebugButton.onValueChanged.AddListener(delegate {TogglePlanesVisibility();});
+                showDebugButton.interactable = true;
+                showDebugButton.onValueChanged.AddListener(delegate {_marbleControl.ToggleDebug();});
             }
             
         }
@@ -176,7 +158,7 @@ namespace Menu
             const int yOffset = -110;
             for (int i = 0; i < _marbleControl.levels.Count; i++)
             {
-                var button = Instantiate(_levelButton, _levelMenuRoot.transform);
+                var button = Instantiate(levelButton, levelMenuRoot.transform);
                 button.Menu = this;
                 if (i == 0)
                 {
@@ -199,6 +181,9 @@ namespace Menu
 
         void RestartLevel()
         {
+            //Clear any currently open menus.
+            infoMenu.SetActive(false);
+            optionsMenu.SetActive(false);
             if (_restartSelected)
             {
                 _marbleControl.RestartLevel();
@@ -218,20 +203,11 @@ namespace Menu
             else
             {
                 //Clear any currently open menus.
-                m_InfoMenu.SetActive(false);
-                m_DebugOptionsMenu.SetActive(false);
-
+                infoMenu.SetActive(false);
+                optionsMenu.SetActive(false);
+                _restartSelected = false;
                 menu.SetActive(true);
             }
         }
-
-        void ToggleOriginVisibility()
-        {
-        }
-
-        void TogglePlanesVisibility()
-        {
-        }
-        
     }
 }

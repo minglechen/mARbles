@@ -82,13 +82,16 @@ public class MarbleControl : MonoBehaviour
 
     IEnumerator ResetMarbleCoroutine(Vector3 pos)
     {
-        _marble.enabled = false;
         yield return new WaitForFixedUpdate();
-        _marble.enabled = true;
+        if (!_marble.gameObject.activeSelf) _marble.gameObject.SetActive(true);
         _marble.transform.position = pos;
         _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
+    public void OnGameWin()
+    {
+        _marble.gameObject.SetActive(false);
+    }
     public Vector3 GetPlaneUp()
     {
         return _plane.transform.up;
@@ -102,6 +105,17 @@ public class MarbleControl : MonoBehaviour
     public void ClearDebugLog()
     {
         debugText.text = "Debug text\n\n";
+    }
+
+    public void ToggleDebug()
+    {
+        debug.SetActive(!debug.activeSelf);
+    }
+
+    public void ToggleSound()
+    {
+        var volume = AudioListener.volume;
+        AudioListener.volume = volume == 0 ? 1 : 0;
     }
 
     private void LoadLevelAsync(string levelPath, ARTrackedImage newImage)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 422218014}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.4440221, g: 0.49316514, b: 0.5722316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -700,17 +700,15 @@ MonoBehaviour:
     _keys:
     - squid
     - dog
-    - 1
     _values:
-    - Levels/Level_1
-    - Levels/Level_2
-    - Levels/Labyrinth_Base_Curved
+    - Labyrinth_Base_Curved
+    - Labyrinth_Base_Curved
   trackedImageName: 1
   levels:
-  - Levels/Level_1
-  - Levels/Level_2
-  - Levels/Labyrinth_Base_Curved
-  - Levels/Level_1
+  - Levels/Labyrinth_Demos
+  - Levels/Labyrinth_Snake
+  - Levels/Labyrinth_Holes
+  - Levels/Labyrinth_Bouncers
   currentLevel: 0
   debug: {fileID: 1435971376}
   respawnHeightOffset: 0.01

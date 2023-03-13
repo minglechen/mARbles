@@ -1181,7 +1181,7 @@ GameObject:
   - component: {fileID: 7018507605372953186}
   - component: {fileID: 3600701298458610175}
   m_Layer: 0
-  m_Name: Level_1
+  m_Name: Labyrinth_Snake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

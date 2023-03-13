@@ -1605,7 +1605,7 @@ GameObject:
   - component: {fileID: 9101714849130518321}
   - component: {fileID: -7376316947740903829}
   m_Layer: 0
-  m_Name: Level_2
+  m_Name: Labyrinth_Holes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

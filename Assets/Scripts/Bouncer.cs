@@ -6,12 +6,14 @@ using UnityEngine;
 public class Bouncer : MonoBehaviour
 {
     private MarbleControl _marbleControl;
+    private Animator _bouncerAnimator;
 
     public float bounceMagnitude;
     // Start is called before the first frame update
     void Start()
     {
         _marbleControl = GameObject.FindWithTag("GameController").GetComponent<MarbleControl>();
+        _bouncerAnimator = GetComponent<Animator>();
     }
     
     private void OnTriggerStay(Collider other)
@@ -28,5 +30,6 @@ public class Bouncer : MonoBehaviour
     {
         if(!other.CompareTag("Player")) return;
         GetComponent<AudioSource>().Play();
+        _bouncerAnimator.SetTrigger("Bounced");
     }
 }

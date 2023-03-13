@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -76,6 +77,14 @@ public class MarbleControl : MonoBehaviour
     public void ResetMarble(Vector3 pos, bool initial = false)
     {
         if (!initial) GetComponent<AudioSource>().Play();
+        StartCoroutine(ResetMarbleCoroutine(pos));
+    }
+
+    IEnumerator ResetMarbleCoroutine(Vector3 pos)
+    {
+        _marble.enabled = false;
+        yield return new WaitForFixedUpdate();
+        _marble.enabled = true;
         _marble.transform.position = pos;
         _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }

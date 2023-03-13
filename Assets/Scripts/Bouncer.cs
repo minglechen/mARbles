@@ -6,7 +6,8 @@ using UnityEngine;
 public class Bouncer : MonoBehaviour
 {
     private MarbleControl _marbleControl;
-    
+
+    public float bounceMagnitude;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class Bouncer : MonoBehaviour
         var direction = rb.velocity.normalized;
         var normal = Vector3.ProjectOnPlane(other.transform.position - transform.position, _marbleControl.GetPlaneUp()).normalized;
         // var newDirection = Vector3.Reflect(direction, normal);
-        rb.AddForce(normal * 10);
+        rb.AddForce(normal * bounceMagnitude);
     }
 
     private void OnTriggerEnter(Collider other)

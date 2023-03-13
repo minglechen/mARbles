@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -7,31 +8,33 @@ using UnityEngine.Serialization;
 
 public class MarbleControl : MonoBehaviour
 {
-    [SerializeField]
-    ARTrackedImageManager trackedImageManager;
-    [SerializeField]
-    Marble marblePrefab;
     
+    public ARTrackedImageManager trackedImageManager;
+    public Marble marblePrefab;
+    
+    [FormerlySerializedAs("levelMap")] 
+    public SerializableDictionary<string, string> hiddenLevelMap;
+
+    public string trackedImageName;
+    public List<string> levels;
+    public int currentLevel;
+
     [SerializeField] private GameObject debug;
-    [SerializeField] private SerializableDictionary<string, string> levelMap;
-    [NonSerialized]
-    public TextMeshProUGUI debugText;
-    [NonSerialized]
-    public GameObject restartPoint;
 
     public float respawnHeightOffset;
     public float respawnTriggerDistance;
+    
+    private Checkpoint _restartPoint;
     private Marble _marble;
     private PlaneBase _plane;
-
-    private Camera _camera;
+    private TextMeshProUGUI debugText;
+    private ARTrackedImage _currentTrackedImage;
     private bool _arEnabled;
 
     
     private void Start()
     {
         debugText = debug.GetComponent<TextMeshProUGUI>();
-        _camera = Camera.main;
     }
     
 
@@ -41,15 +44,38 @@ public class MarbleControl : MonoBehaviour
         {
             if ((_marble.transform.position - _plane.transform.position).magnitude > respawnTriggerDistance)
             {
-                var restartTransform = restartPoint.transform;
+                var restartTransform = _restartPoint.transform;
                 ResetMarble(restartTransform.position + restartTransform.up * respawnHeightOffset);
             }
         }
     }
 
-    public void ResetMarble(Vector3 pos)
+    public void SelectLevel(int l)
     {
-        GetComponent<AudioSource>().Play();
+        if (currentLevel == l || l < 0 || levels.Count <= l) return;
+        currentLevel = l;
+        LoadLevelAsync(levels[currentLevel], _currentTrackedImage);
+    }
+    public bool SetCheckpoint(Checkpoint checkpoint)
+    {
+        if (checkpoint == _restartPoint) return false;
+        
+        _restartPoint.SetButtonColor(false);
+        _restartPoint = checkpoint;
+        return true;
+    }
+
+    public void RestartLevel()
+    {
+        _restartPoint.SetButtonColor(false);
+        _restartPoint = GameObject.FindWithTag("Start").GetComponent<Checkpoint>();
+        var restartTransform = _restartPoint.transform;
+        ResetMarble(restartTransform.position  + restartTransform.up * respawnHeightOffset);
+    }
+    
+    public void ResetMarble(Vector3 pos, bool initial = false)
+    {
+        if (!initial) GetComponent<AudioSource>().Play();
         _marble.transform.position = pos;
         _marble.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
@@ -59,12 +85,22 @@ public class MarbleControl : MonoBehaviour
         return _plane.transform.up;
     }
 
+    public void DebugLog(string s)
+    {
+        debugText.text += $"{s}\n";
+    }
+
+    public void ClearDebugLog()
+    {
+        debugText.text = "Debug text\n\n";
+    }
+
     private void LoadLevelAsync(string levelPath, ARTrackedImage newImage)
     {
+        _currentTrackedImage = newImage;
         if (_arEnabled)
         {
             _arEnabled = false;
-            // Maybe add an object pool?
             Destroy(_plane.gameObject);
         }
 
@@ -75,11 +111,12 @@ public class MarbleControl : MonoBehaviour
             _plane.TrackedImage = newImage;
             if (!_marble)
             {
-                debugText.text += "add marble\n";
+                DebugLog("Add marble");
                 _marble = Instantiate(marblePrefab);
             }
-            restartPoint = GameObject.FindWithTag("Start");
-            ResetMarble(restartPoint.transform.position);
+            _restartPoint = GameObject.FindWithTag("Start").GetComponent<Checkpoint>();
+            var restartTransform = _restartPoint.transform;
+            ResetMarble(restartTransform.position  + restartTransform.up * respawnHeightOffset, true);
             _arEnabled = true;
         };
     }
@@ -94,32 +131,28 @@ public class MarbleControl : MonoBehaviour
         {
             // Handle added event
             var name = newImage.referenceImage.name;
-            debugText.text += $"{name}\n";
-            if (!levelMap.Dict.ContainsKey(name)) continue;
-            debugText.text += "load level";
-            LoadLevelAsync(levelMap.Dict[name], newImage);
+            DebugLog($"Detected image {name} for the first time");
+            if (name == trackedImageName)
+            {
+                LoadLevelAsync(levels[currentLevel], newImage);
+                return;
+            }
+            if (!hiddenLevelMap.Dict.ContainsKey(name)) continue;
+            var levelPath = hiddenLevelMap.Dict[name];
+            DebugLog($"Load level {levelPath}");
+            LoadLevelAsync(levelPath, newImage);
             return;
         }
     
         foreach (var updatedImage in eventArgs.updated)
         {
-            // Handle updated event
-            // m_debug.GetComponent<TextMeshProUGUI>().text += updatedImage.referenceImage.name + ": updated\n";
-            // var name = updatedImage.referenceImage.name;
-            // if (name == _currentImageName) continue;
-            // debugText.text += name;
-            // if (!levelMap.Dict.ContainsKey(name)) continue;
-            // LoadLevelAsync(levelMap.Dict[name], name, updatedImage);
         }
     
         // I've never seen this being called in practice
         foreach (var removedImage in eventArgs.removed)
         {
             // Handle removed event
-
-                debugText.text += "remove marble\n";
-                Destroy(_marble);
-                _arEnabled = false;
+            DebugLog($"Image removed: {removedImage.referenceImage.name}");
         }
     }
 }

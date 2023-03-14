@@ -3,7 +3,62 @@ guid: 606a5630e3d23244bb5f9a6aa2c2b7bb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Laminate_Floor.001
+    second: {fileID: 2100000, guid: 92ddb2692c95fc140bb501db30707b37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.002
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.004
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.006
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.007
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.009
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.016
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.020
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.021
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.022
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plywood.023
+    second: {fileID: 2100000, guid: 7f5c2fe5cf658b448a6926e4298e3898, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -37,7 +92,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importVisibility: 1

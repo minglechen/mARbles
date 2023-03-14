@@ -152,7 +152,7 @@ public class MarbleControl : MonoBehaviour
         {
             // Handle added event
             var name = newImage.referenceImage.name;
-            DebugLog($"Detected image {name} for the first time");
+            DebugLog($"Detected image {name}");
             if (name == trackedImageName)
             {
                 LoadLevelAsync(levels[currentLevel], newImage);

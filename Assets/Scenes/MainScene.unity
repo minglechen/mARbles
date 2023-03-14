@@ -709,6 +709,7 @@ MonoBehaviour:
   levels:
   - Levels/Labyrinth_Snake
   - Levels/Labyrinth_Holes
+  - Levels/Walk_The_Plank
   - Levels/Labyrinth_Bouncers
   - Levels/Fans_and_Magnets_Level
   - Levels/All_in_One_Level

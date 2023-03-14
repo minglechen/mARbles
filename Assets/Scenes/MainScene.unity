@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 422218014}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.4440221, g: 0.49316514, b: 0.5722316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -711,6 +711,7 @@ MonoBehaviour:
   - Levels/Labyrinth_Holes
   - Levels/Labyrinth_Bouncers
   - Levels/Fans_and_Magnets_Level
+  - Levels/All_in_One_Level
   currentLevel: 0
   debug: {fileID: 1435971376}
   respawnHeightOffset: 0.01

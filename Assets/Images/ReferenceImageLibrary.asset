@@ -47,3 +47,13 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: 1
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5365922209956165381
+      m_GuidHigh: 5174377466420942479
+    m_SerializedTextureGuid:
+      m_GuidLow: 17862443564779421558
+      m_GuidHigh: 14995036351003794105
+    m_Size: {x: 0.3, y: 0.25}
+    m_SpecifySize: 1
+    m_Name: rickroll
+    m_Texture: {fileID: 0}

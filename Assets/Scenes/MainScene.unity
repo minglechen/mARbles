@@ -700,15 +700,17 @@ MonoBehaviour:
     _keys:
     - squid
     - dog
+    - rickroll
     _values:
-    - Labyrinth_Base_Curved
-    - Labyrinth_Base_Curved
+    - Levels/Labyrinth_Base_Curved
+    - Levels/Labyrinth_Demos
+    - Levels/Labyrinth_Joke
   trackedImageName: 1
   levels:
-  - Levels/Labyrinth_Demos
   - Levels/Labyrinth_Snake
   - Levels/Labyrinth_Holes
   - Levels/Labyrinth_Bouncers
+  - Levels/Fans_and_Magnets_Level
   currentLevel: 0
   debug: {fileID: 1435971376}
   respawnHeightOffset: 0.01

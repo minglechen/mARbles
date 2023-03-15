@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
+/// <summary>
+/// The base plane for a level.
+/// </summary>
 public class PlaneBase : MonoBehaviour
 {
-    private Rigidbody _rb;
-    private Vector3 _previousPosition;
-    private bool _startInterpolation;
+    /// <summary>
+    /// The AR tracked image the plane is following.
+    /// </summary>
     public ARTrackedImage TrackedImage
     {
         set
@@ -19,7 +22,9 @@ public class PlaneBase : MonoBehaviour
 
         }
     }
-
+    private Rigidbody _rb;
+    private Vector3 _previousPosition;
+    private bool _startInterpolation;
     private ARTrackedImage _trackedImage;
     private bool _isTracking;
     void Start()
@@ -27,6 +32,9 @@ public class PlaneBase : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
     
+    /// <summary>
+    /// Move to the position and rotation of the tracked image each update, applying smoothing to the position.
+    /// </summary>
     void FixedUpdate()
     {
         if (!_isTracking) return;

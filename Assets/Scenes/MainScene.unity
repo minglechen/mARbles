@@ -697,14 +697,14 @@ MonoBehaviour:
   marblePrefab: {fileID: 6424701530708219964, guid: f6b5ce88134f6774799f187caf1f3ed9,
     type: 3}
   hiddenLevelMap:
-    _keys:
+    keys:
     - squid
     - dog
     - rickroll
-    _values:
-    - Levels/Labyrinth_Base_Curved
-    - Levels/Labyrinth_Demos
-    - Levels/Labyrinth_Joke
+    values:
+    - Levels/Hidden/Labyrinth_Demos_Bouncers
+    - Levels/Hidden/Labyrinth_Demos_Interferers
+    - Levels/Hidden/Labyrinth_Joke
   trackedImageName: 1
   levels:
   - Levels/Labyrinth_Snake
